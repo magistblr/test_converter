@@ -1,0 +1,29 @@
+.App {
+  width: 500px;
+  height: 400px;
+  background-color: rgb(190, 190, 190);
+  border-radius: 5%;
+}
+
+.content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pages_wrapper{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.pages{
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
