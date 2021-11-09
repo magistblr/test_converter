@@ -1,36 +1,18 @@
 export enum ACTIONS_TYPE {
-    CHANGE_CURRENCY_FIELD_TYPE = 'CurrencyExchange/CHANGE_CURRENCY_FIELD_TYPE',
-    CHANGE_CHANGE_ACTION = 'CurrencyExchange/CHANGE_CHANGE_ACTION',
-    CHANGE_CURRENT_CURRENCY = 'CurrencyExchange/CHANGE_CURRENT_CURRENCY',
+    CHANGE_BASE_CURRENCY = 'CurrencyExchange/CHANGE_BASE_CURRENCY',
+    CHANGE_PRICE_BASE = 'CurrencyExchange/CHANGE_PRICE_BASE',
+    CHANGE_PRICE_CURRENCY = 'CurrencyExchange/CHANGE_PRICE_CURRENCY',
+    CHANGE_CURRENCY = 'CurrencyExchange/CHANGE_CURRENCY',
 }
 
 
-export type ChangeCurrencyFieldType = {
-    type: 'CurrencyExchange/CHANGE_CURRENCY_FIELD_TYPE'
-    amountOfBYN: string
-    amountOfCurrency: string
-};
+export const ChangeCurrencyBase = (payload: string) => ({ type: 'CurrencyExchange/CHANGE_BASE_CURRENCY', payload} as const);
+export const ChangeCurrency = (payload: string) => ({ type: 'CurrencyExchange/CHANGE_CURRENCY', payload} as const);
+export const ChangePriceBase = (payload: number) => ({ type: 'CurrencyExchange/CHANGE_PRICE_BASE', payload} as const);
+export const ChangePriceCurrency = (payload: number) => ({ type: 'CurrencyExchange/CHANGE_PRICE_CURRENCY', payload} as const);
 
-export const ChangeCurrencyFieldAC = (amountOfBYN: string, amountOfCurrency: string): ChangeCurrencyFieldType => {
-    return { type: 'CurrencyExchange/CHANGE_CURRENCY_FIELD_TYPE', amountOfBYN, amountOfCurrency}
-};
-
-export type ChangeAction = {
-    type: 'CurrencyExchange/CHANGE_CHANGE_ACTION'
-    isBuying: boolean
-};
-
-export const ChangeActionAC = (isBuying: boolean): ChangeAction => {
-    return { type: 'CurrencyExchange/CHANGE_CHANGE_ACTION', isBuying}
-};
-
-export type ChangeCurrentCurrencyType = {
-    type: 'CurrencyExchange/CHANGE_CURRENT_CURRENCY'
-    currentCurrency: string
-};
-
-export const ChangeCurrentCurrencyAC = (currentCurrency: string): ChangeCurrentCurrencyType => {
-    return { type: 'CurrencyExchange/CHANGE_CURRENT_CURRENCY', currentCurrency}
-};
-
-export type CurrencyReducersTypes = ChangeCurrencyFieldType | ChangeAction | ChangeCurrentCurrencyType;
+export type CurrencyReducersTypes =
+        | ReturnType<typeof ChangeCurrencyBase>
+        | ReturnType<typeof ChangePriceBase>
+        | ReturnType<typeof ChangePriceCurrency>
+        | ReturnType<typeof ChangeCurrency>
