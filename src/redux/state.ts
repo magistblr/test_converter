@@ -1,8 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import { currencyReducer } from './currencyReducer';
+import { convertReducer } from './convertReducer';
 import thunkMiddleware from "redux-thunk"
+import { currencyReducer } from "./currencyReducer";
 
 const reducers = combineReducers({
+    convert: convertReducer,
     currency: currencyReducer,
 });
 export type IGlobalState = ReturnType<typeof reducers>;

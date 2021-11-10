@@ -1,9 +1,7 @@
-import axios from 'axios';
-import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { currencyAPI } from '../../api/currencyApi';
-import { ChangeCurrency, ChangeCurrencyBase, ChangePriceBase, ChangePriceCurrency } from '../../redux/actions';
-import { getCurrent } from '../../redux/currencyReducer';
+import { ChangeCurrency, ChangeCurrencyBase, ChangePriceBase } from '../../redux/actions';
+import { getCurrent } from '../../redux/convertReducer';
 import { IGlobalState } from '../../redux/state';
 import s from './CurrencyExchange.module.css';
 
@@ -13,25 +11,22 @@ type CurrencyPropsType = {
 
 export const CurrencyExchange: React.FC<CurrencyPropsType> = () => {
     const [text, setText] = useState('')
-    const [data, setData] = useState('')
     const dispatch = useDispatch()
 
-    const basePrice = useSelector<IGlobalState, number>(state =>  state.currency.priceBase);
-    const currency = useSelector<IGlobalState, string | null>(state =>  state.currency.currency);
-    const baseCurrency = useSelector<IGlobalState, string>(state =>  state.currency.base);
-    const priceCurrency = useSelector<IGlobalState, number | null>(state =>  state.currency.priceCurrency);
+    const basePrice = useSelector<IGlobalState, number>(state =>  state.convert.priceBase);
+    const currency = useSelector<IGlobalState, string>(state =>  state.convert.currency);
+    const baseCurrency = useSelector<IGlobalState, string>(state =>  state.convert.base);
+    const priceCurrency = useSelector<IGlobalState, number>(state =>  state.convert.priceCurrency);
 
 
 
     const addItemHandler = () => {
         const base = text.split(" ")
-        // console.log(base);
         if (text.trim() !== '') {
             dispatch(ChangeCurrencyBase(base[1]))
             dispatch(ChangeCurrency(base[3]))
             dispatch(ChangePriceBase(Number(base[0])))
             dispatch(getCurrent(base))
-            setData(text)
             setText('');
         }
     }
@@ -47,15 +42,18 @@ export const CurrencyExchange: React.FC<CurrencyPropsType> = () => {
         }
     }
 
-    const round = (num: number) => {
-        return Math.round(num * 1000) / 1000
+    const round100 = (num: number) => {
+        return Math.round(num * 100) / 100
     }
+
+    // const reg = /\d+\s\D+\s/in/\s\D+/
 
     return (
         <div className={s.currency}>
+            <div className={text ? `${s.message} ${s.message_active}` : s.message}>example: 15 usd in rub</div>
             <input className={s.input} onChange={onChangeHandler} onKeyPress={onKeyPressHandler} value={text} placeholder="enter the text, example: 15 usd in rub"/>
-            <button onClick={addItemHandler}>send</button>
-            <div>{basePrice} {baseCurrency} = {round(priceCurrency ? priceCurrency : 1)} {currency}</div>
+            <button className={s.btn} onClick={addItemHandler}>convert</button>
+            {currency && <div className={s.text}>{basePrice} {baseCurrency.toUpperCase()} = {round100(priceCurrency ? priceCurrency : 1)} {currency && currency.toUpperCase()}</div>}
         </div>
     );
 };

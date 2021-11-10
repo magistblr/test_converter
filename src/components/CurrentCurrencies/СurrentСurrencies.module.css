@@ -1,2 +1,11 @@
-.current {
+.currency {
+  height: 20px;
+}
+
+.base{
+  cursor: pointer;
+}
+
+.base_active{
+  background-color: aquamarine;
 }
